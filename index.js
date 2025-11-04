@@ -36,6 +36,20 @@ app.post("/create/book", async (req, res) => {
         return res.redirect('/form-basic');
     }
 });
+app.post("/edit/book/:id", async (req, res) => {
+    try {
+        const book = await Books.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!book) { 
+            return res.status(404).send("Book not found");
+        }else{
+            console.log('Book updated:', book);
+        }
+        return res.redirect('/tables'); // Redirect to the view page after editing
+    } catch (error) {
+        console.log('Error updating book:', error);
+        return res.status(500).send("Error updating book");
+    }
+});
 app.get('/book/delete/:id', (req, res) => {
     const { id } = req.params;
     Books.findByIdAndDelete(id)
@@ -46,15 +60,15 @@ app.get('/book/delete/:id', (req, res) => {
             return res.json({ message: err.message });
         })
 });
-// app.get('/book/edit/:id', async (req, res) => {
-//     try {
-//         const { id } = req.params;
-//         let allbooks = await Books.find({});
-//         return res.render('./pages/editbook', { bookId: id, books: allbooks });
-//     } catch (error) {
-//         return res.json({ message: error.message });       
-//     }
-// });
+app.get('/book/edit/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        let allbooks = await Books.find({});
+        return res.render('./pages/editbook', { ID: id, books: allbooks });
+    } catch (error) {
+        return res.json({ message: error.message });       
+    }
+});
 app.listen(port, (err) => {
     if (err) {
         console.log(err);

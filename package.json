@@ -5,7 +5,8 @@
     "ejs": "^3.1.10",
     "express": "^5.1.0",
     "mongoose": "^8.19.2",
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "path": "^0.12.7"
   },
   "name": "pr-5-bookstore",
   "version": "1.0.0",
